@@ -6,6 +6,9 @@ ventana = tk.Tk()#crear ventana principal
 ventana.title("Menu del Block")#titulo de la ventana aparece en la barra superior
 ventana.geometry("500x370")#tamaño de la ventana ancho x alto cuando ejecuto es el tamaño incial
 #tamaño fijo ventana.resizable(False, False) #Deshabilitar cambio de tamaño de la ventana
+# False, False = ni en ancho ni en alto
+# True, False = solo puede agrandar a lo ancho
+# False, True = solo puede agrandar a lo alto
 ventana.resizable(False, False) #Deshabilitar cambio de tamaño de la ventana
 ventana.config(bg="#B3BBFF")#configuracion de la ventana color de fondo
 
