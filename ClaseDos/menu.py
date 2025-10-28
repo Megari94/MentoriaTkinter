@@ -30,6 +30,14 @@ def agregar_tarea():
     ventana.destroy() #Cerrar ventana actual
     os.system("python AgregarTarea.py")#Ejecutar script AgregarTarea.py que esta en el mismo nivel que menu.py
 
+def ver_tarea():
+    ventana.destroy()
+    os.system("python VerTarea.py")
+
+def eliminar_tarea():
+    ventana.destroy()
+    os.system("python EliminarTarea.py")
+
 #Botones
 
 tk.Button(
@@ -49,6 +57,7 @@ tk.Button(
     fg="white",
     height=3,
     font=fuente_boton,
+    command=ver_tarea
 ).grid(row=2, column=0, sticky="we", pady=5)
 
 tk.Button(
@@ -58,6 +67,7 @@ tk.Button(
     fg="white",
     height=3,
     font=fuente_boton,
+    command=eliminar_tarea
 ).grid(row=3, column=0, sticky="we", pady=5)
 
 ventana.mainloop() 
