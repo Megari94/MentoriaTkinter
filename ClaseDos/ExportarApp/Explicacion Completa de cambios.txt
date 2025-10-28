@@ -125,4 +125,7 @@ Parámetros:
 Resultado: `dist/menu.exe` funciona con todas las ventanas y logo.
 
 
+EN LA CARPETA DIST SE ENCUENTRA EL EJECUTABLE
+
+
 
