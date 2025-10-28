@@ -1,0 +1,128 @@
+Proyecto Block de Tareas con Tkinter y PyInstaller para exportar
+
+
+
+1. Objetivo del proyecto
+
+Crear una aplicación de escritorio en Tkinter para:
+
+* Agregar tareas.
+* Ver tareas guardadas.
+* Eliminar tareas.
+* Tener un menú principal con logo que permita acceder a estas opciones.
+
+El proyecto debe funcionar desde un solo ejecutable `.exe`, generado con PyInstaller.
+
+
+2. Problema inicial
+
+* Cuatro scripts independientes:
+
+  * `menu.py` → Menú principal.
+  * `AgregarTarea.py` → Ventana para agregar tareas.
+  * `VerTarea.py` → Ventana para ver tareas.
+  * `EliminarTarea.py` → Ventana para eliminar tareas.
+* Cada script usaba `os.system('python archivo.py')` para abrir otros scripts.
+* Esto no funciona en un `.exe`.
+* La imagen del logo se cargaba con `Image.open('logo.png')`, causando errores en PyInstaller.
+
+
+
+3. Solución principal
+
+a) Uso de funciones
+
+Cada script lo vamos a encapsular en una función que abre su ventana, por ejemplo:
+
+```python
+def agregar_tarea_ventana():
+    ventana = tk.Tk()
+    ...
+    ventana.mainloop()
+```
+
+b) Menú principal (`menu.py`)
+
+* Función `menu_ventana()` que abre la ventana con botones.
+* Cada botón llama a la función correspondiente y cierra la ventana actual:
+
+```python
+tk.Button(..., command=lambda:[ventana.destroy(), agregar_tarea_ventana()])
+```
+
+c) Manejo del logo en PyInstaller
+
+* Función `resource_path()`:
+
+```python
+import sys, os
+
+def resource_path(relative_path):
+    try:
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath('.')
+    return os.path.join(base_path, relative_path)
+```
+
+-->Se carga la imagen con:
+
+```python
+imagen = Image.open(resource_path('logo.png'))
+```
+
+
+
+4. Cambios en cada script
+
+AgregarTarea.py
+
+* Función `agregar_tarea_ventana()`.
+* Entrada para escribir la tarea.
+* Botón para guardar tareas en `tareas.txt`.
+* Botón para volver al menú que llama a `menu_ventana()`.
+
+EliminarTarea.py
+
+* Función `eliminar_tarea_ventana()`.
+* Lista de tareas con `Listbox`.
+* Botón para eliminar la tarea seleccionada.
+* Botón para volver al menú.
+
+VerTarea.py
+
+* Función `ver_tarea_ventana()`.
+* Muestra las tareas existentes en un `Text`.
+* Botón para volver al menú.
+
+menu.py
+
+* Función `menu_ventana()`.
+* Logo cargado con `resource_path()`.
+* Botones para acceder a cada ventana.
+* Llamada principal:
+
+```python
+if __name__ == '__main__':
+    menu_ventana()
+```
+
+
+5. Generación del `.exe` con PyInstaller
+
+Comando:
+
+Terminal de VSC:
+py -m PyInstaller --onefile --noconsole --add-data "logo.png;." menu.py
+
+
+Parámetros:
+
+  * `--onefile`: Genera un solo archivo `.exe`.
+  * `--noconsole`: Oculta la consola de Python.
+  * `--add-data`: Incluye archivos externos (logo).
+
+Resultado: `dist/menu.exe` funciona con todas las ventanas y logo.
+
+
+
